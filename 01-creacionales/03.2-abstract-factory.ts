@@ -12,9 +12,11 @@
  * https://refactoring.guru/es/design-patterns/abstract-factory
  */
 
+import {COLORS} from "../helpers/colors.ts";
+
 /**
- * !Instrucciones:
- 	1.Completen las Clases de Productos:
+ * ! Instrucciones:
+ 	1. Completen las Clases de Productos:
     •	ElectricCar debe implementar Vehicle y mostrar el mensaje "Ensamblando un auto eléctrico".
     •	GasCar debe implementar Vehicle y mostrar el mensaje "Ensamblando un auto de combustión".
     •	ElectricEngine debe implementar Engine y mostrar el mensaje "Arrancando motor eléctrico".
@@ -39,24 +41,28 @@ interface Engine {
 
 // 2. Clases Concretas de Productos
 
-class ElectricCar {
-  // Implementación del método assemble
-  // 'Ensamblando un auto eléctrico'
+class ElectricCar implements Vehicle {
+  assemble() {
+      console.log('%c Assembling electric car', COLORS.yellow);
+  }
 }
 
-class GasCar {
-  // Implementación del método assemble
-  // 'Ensamblando un auto de combustión'
+class GasCar implements Vehicle {
+    assemble() {
+        console.log('%c Assembling combustion car', COLORS.brown);
+    }
 }
 
-class ElectricEngine {
-  // Implementación del método start
-  // 'Arrancando motor eléctrico'
+class ElectricEngine implements Engine {
+  start() {
+      console.log('%c Starting electric engine car', COLORS.blue);
+  }
 }
 
-class GasEngine {
-  // Implementación del método start
-  // 'Arrancando motor de combustión'
+class GasEngine implements Engine {
+    start() {
+        console.log('%c Starting combustion engine car', COLORS.orange);
+    }
 }
 
 // 3. Interfaz de la Fábrica Abstracta
@@ -69,11 +75,23 @@ interface VehicleFactory {
 // 4. Clases Concretas de Fábricas
 
 class ElectricVehicleFactory implements VehicleFactory {
-  // Implementación de los métodos createVehicle y createEngine
+  createVehicle(): Vehicle {
+      return new ElectricCar()
+  }
+
+  createEngine(): Engine {
+      return new ElectricEngine()
+  }
 }
 
 class GasVehicleFactory implements VehicleFactory {
-  // Implementación de los métodos createVehicle y createEngine
+    createVehicle(): Vehicle {
+        return new GasCar()
+    }
+
+    createEngine(): Engine {
+        return new GasEngine()
+    }
 }
 
 // 5. Código Cliente
