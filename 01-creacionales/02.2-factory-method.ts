@@ -35,19 +35,27 @@ interface Report {
 // Implementar SalesReport e InventoryReport
 
 class SalesReport implements Report {
-  // TODO: implementar el método e imprimir en consola:
-  // 'Generando reporte de ventas...'
+  generate(): void {
+    console.log('%cGenerating Sales Report', COLORS.red);
+  }
 }
 
 class InventoryReport implements Report {
-  // TODO: implementar el método e imprimir en consola:
-  // 'Generando reporte de inventario...'
+  generate(): void {
+    console.log('%cGenerating Inventory Report', COLORS.green);
+  }
+}
+
+class ManagementReport implements Report {
+  generate(): void {
+    console.log('%cGenerating Management Report', COLORS.yellow);
+  }
 }
 
 // 3. Clase Base ReportFactory con el Método Factory
 
 abstract class ReportFactory {
-  abstract createReport(): Report;
+  protected abstract createReport(): Report;
 
   generateReport(): void {
     const report = this.createReport();
@@ -59,13 +67,19 @@ abstract class ReportFactory {
 
 class SalesReportFactory extends ReportFactory {
   createReport(): Report {
-    throw new Error('Method not implemented.');
+    return new SalesReport();
   }
 }
 
 class InventoryReportFactory extends ReportFactory {
   createReport(): Report {
-    throw new Error('Method not implemented.');
+    return new InventoryReport();
+  }
+}
+
+class ManagementReportFactory extends ReportFactory {
+  createReport(): Report {
+    return new ManagementReport();
   }
 }
 
@@ -75,14 +89,21 @@ function main() {
   let reportFactory: ReportFactory;
 
   const reportType = prompt(
-    '¿Qué tipo de reporte deseas? %c(sales/inventory)',
-    COLORS.red
+    '¿Qué tipo de reporte deseas? (sales/inventory/management)'
   );
 
-  if (reportType === 'sales') {
-    reportFactory = new SalesReportFactory();
-  } else {
-    reportFactory = new InventoryReportFactory();
+  switch (reportType) {
+    case 'sales':
+      reportFactory = new SalesReportFactory();
+      break;
+    case 'inventory':
+      reportFactory = new InventoryReportFactory();
+      break;
+    case 'management':
+      reportFactory = new ManagementReportFactory();
+      break;
+    default:
+      throw new Error('No report found');
   }
 
   reportFactory.generateReport();
